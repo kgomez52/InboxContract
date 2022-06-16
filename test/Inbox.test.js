@@ -8,16 +8,17 @@ let accounts;
 let inbox;
 
 beforeEach(async () => {
-    //Get a list of all accounts
+    // Get a list of all accounts
     accounts = await web3.eth.getAccounts();
     
-    //Use one of those accounts to deploy the contract
+    // Use one of those accounts to deploy the contract
     inbox = await new web3.eth.Contract(JSON.parse(interface))
     .deploy({data: bytecode, arguments: ['Hi there!']})
     .send({from: accounts[0], gas: '1000000'});
 });
 
 describe('Inbox is being tested', () => {
+    // Simple test to see if contract deploys
     it('deploys a contract', () => {
         assert.ok(inbox.options.address);
     });
