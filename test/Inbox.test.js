@@ -1,6 +1,6 @@
 const assert = require('assert');
-const ganache = require('ganache-cli');
-const Web3 = require('web3'); //constructor, That's why it is W and not w
+const ganache = require('ganache-cli'); // Hosts a local test network
+const Web3 = require('web3'); //constructor, That's why it is W and not w | Portal to web3 world
 const web3 = new Web3(ganache.provider()); //instance since it's lower case w
 const {interface, bytecode} = require('../compile');
 
@@ -25,12 +25,14 @@ describe('Inbox is being tested', () => {
     });
 
     // Test to see if the contract has a default message
+    // .call() is used anytime we want to call a function. It is read-only and instant
     it('has a default message', async () => {
         const message = await inbox.methods.message().call();
         assert.equal(message, INITIAL_STRING);
     });
 
     // Test to see if the message can change (modifying contracts data (Transaction))
+    // .send() says we want to make changes to data inside the contract and we have to wait. Also has to specify who's paying for transaction
     it('can change the message', async () => {
         await inbox.methods.setMessage('bye').send({from: accounts[0]});
         const message = await inbox.methods.message().call();
